@@ -3,29 +3,31 @@ import Quickshell.Wayland
 import QtQuick
 import Quickshell.Services.Notifications
 import Quickshell.Io
+import "../config/config.js" as Config
+
 
 ShellRoot{
     id: root
-    property var dpScreen: null
+    property var notifScreen: null
 
     Component.onCompleted: {
         for (let screen of Quickshell.screens) {
-            if (screen.name.includes("DP")) {
-                dpScreen = screen
+            if (screen.name.includes(Config.config.notification.monitor)) {
+                notifScreen = screen
                 break
             }
         }
     }
 
     PanelWindow {
-        screen: root.dpScreen
+        screen: root.notifScreen
         WlrLayershell.layer: WlrLayer.Overlay
         id: notifElements
         anchors.top: true
         anchors.right: true
         color: "transparent"
         implicitWidth: 400
-        implicitHeight: root.dpScreen.height - 50
+        implicitHeight: root.notifScreen.height - 50
         mask: Region {
             x: 0
             y: 0
@@ -50,7 +52,7 @@ ShellRoot{
 
     Process {
         id: notifSound
-        command: ["pw-play", "/home/dartandr/.config/quickshell/assets/notification.wav"]
+        command: ["pw-play", Config.config.notification.sound]
     }
 
     NotificationServer {
@@ -59,10 +61,9 @@ ShellRoot{
         actionsSupported: true
         onNotification: notif => {
                             notificationComponent.createObject( container, { notification: notif } );
-                            if(notif.appName != "vesktop" && notif.appName != "Pachca"){
+                            if(Config.config.notification.disableSoundFor.indexOf(notif.appName) < 0) {
                                 notifSound.running = true
                             }
-
                         }
     }
 }

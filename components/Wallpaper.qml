@@ -4,10 +4,12 @@ import Quickshell.Widgets
 import QtQuick
 import "../services/Colors"
 import "../services/DateService"
+import "../config/config.js" as Config
 
 PanelWindow {
     id: wallpaper
     property var thisScreen
+    property var wallpaperSource: Config.config.monitors.find(monitor => monitor.name.includes(thisScreen.name))
     screen: thisScreen
     WlrLayershell.layer: WlrLayer.Bottom
     anchors.top: true
@@ -24,7 +26,7 @@ PanelWindow {
         Image{
             height: wallpaper.implicitHeight
             width: wallpaper.implicitWidth
-            source: wallpaper.thisScreen.name.includes("DP") ? "/home/dartandr/Pictures/8.jpg": "/home/dartandr/Pictures/7.jpg"
+            source: wallpaperSource.wallpaper
             fillMode: Image.PreserveAspectCrop
             cache: false
         }

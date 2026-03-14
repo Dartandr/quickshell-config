@@ -5,6 +5,7 @@ import Quickshell.Hyprland
 import Quickshell.Services.SystemTray
 import "../services/Colors"
 import "../services/HyprlandService"
+import "../config/config.js" as Config
 
 PanelWindow {
     id: barPanel
@@ -86,6 +87,13 @@ PanelWindow {
             anchors.rightMargin: 30
             anchors.verticalCenter: parent.verticalCenter
             spacing: 5
+
+            Loader {
+                anchors.verticalCenter: parent.verticalCenter
+                active: Config.config.battery
+                sourceComponent: Battery{}
+            }
+            
             Lang{}
             // Tray Initialization
 
