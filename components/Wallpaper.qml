@@ -26,7 +26,7 @@ PanelWindow {
         Image{
             height: wallpaper.implicitHeight
             width: wallpaper.implicitWidth
-            source: wallpaperSource.wallpaper
+            source: wallpaper.wallpaperSource ? wallpaper.wallpaperSource.wallpaper : Config.config.defaultWallpaper
             fillMode: Image.PreserveAspectCrop
             cache: false
         }
@@ -52,9 +52,6 @@ PanelWindow {
             font.weight: 500
             color: Colors.foreground
         }
-
-
-
     }
 
 }

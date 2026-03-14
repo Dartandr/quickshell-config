@@ -2,6 +2,7 @@ const config = {
 
   battery: true, // show battery in bar
 
+  defaultWallpaper: "", // if new monitor connected this wallpaper will applyed instead of white screen
   monitors: [
     {
         name: "", // screen name
