@@ -6,4 +6,5 @@ import "components"
 ShellRoot {
     Notifications {}
     ScreenOverlay {}
+    Volume {}
 }
