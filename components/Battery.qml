@@ -6,8 +6,9 @@ import "../services/Colors"
 Item{
     id: battery
     property int percent: UPower.displayDevice.percentage * 100
+
     anchors.verticalCenter: parent.verticalCenter
-    width:43
+    width: UPower.onBattery ? 58 : 43
     Rectangle{
         width: 40
         radius: 5
@@ -45,6 +46,17 @@ Item{
         anchors.topMargin: 6
         topRightRadius:2
         bottomRightRadius:2
+    }
+    Loader{
+        active: UPower.onBattery
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+        sourceComponent: Image {
+            height: 12
+            width: 12
+            source: "../assets/icons/thunder.svg"
+        }
+
     }
     height:20
     visible:true
