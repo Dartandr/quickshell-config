@@ -7,70 +7,79 @@ PanelWindow {
     id: volumeBar
     anchors.right: true
     exclusiveZone: 0
-    implicitWidth: 40
-    implicitHeight: root.height + 40
+    implicitWidth: 70
+    implicitHeight: 330
     color: "transparent"
 
-    property int xProp: 30
+    property int xProp: 60
 
     mask: Region {
         x: volumeBar.xProp
         y: 0
-        width: 40
-        height: root.height + 40
+        width: 70
+        height: root.height
     }
 
     Item {
         id: root
-        width: 20
-        height: 120
+        width: 40
+        height: 330
         x: 10 + volumeBar.xProp
-        y: 20
-        property real value: undefined
-        property int handleSize: 20
-        property int trackWidth: 6
+        y: 0
+        property real value: 1.0
+        clip: true
 
         Rectangle {
             id: track
             anchors.horizontalCenter: parent.horizontalCenter
-            width: root.trackWidth
+            width: 40
             height: parent.height
             radius: track.width / 2
-            color: "#444"
+            color: Colors.background
         }
 
         Rectangle {
             anchors.bottom: track.bottom
             anchors.horizontalCenter: track.horizontalCenter
             width: track.width
-            height: root.value * track.height
+            anchors.top: handle.top
             color: Colors.accent
-            radius: track.width / 2
+            radius: 20
         }
 
         Rectangle {
             id: handle
-            width: root.handleSize
-            height: root.handleSize
-            radius: root.handleSize / 2
-            color: "white"
+            width: 40
+            height: 40
+            radius: 20
+            color: Colors.foreground
             anchors.horizontalCenter: track.horizontalCenter
+            y: (1 - root.value) * (track.height - height)
 
-            y: track.y + (1 - root.value) * track.height - handle.height / 2
+            Text{
+                text: Math.round(root.value * 100)
+                color: Colors.background
+                anchors.centerIn: parent
+                font.weight: 700
+                font.pixelSize: 18
+                id: volumeText
+            }
+
         }
 
         MouseArea {
             anchors.fill: parent
             onPressed: updateVol(mouseY)
             onPositionChanged: if (pressed) updateVol(mouseY)
-
             function updateVol(yPos) {
-                let v = 1 - ((yPos - track.y) / track.height)
-                root.value = Math.max(0, Math.min(1, v))
+                let pos = yPos - handle.height / 2
+                pos = Math.max(0, Math.min(track.height - handle.height, pos))
+                let v = 1 - (pos / (track.height - handle.height))
+                root.value = v
             }
         }
         onValueChanged: {
-            if(root.value){
+            if(root.value !== undefined){
                 setVolume.command = ["wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", `${Math.round(root.value * 100)}%`]
                 setVolume.running = true
             }
@@ -80,13 +89,29 @@ PanelWindow {
         Process{
             id: setVolume
         }
+
+        Timer {
+            id: initialDataTimer
+            interval: 500
+            running: true
+            repeat: true
+            onTriggered: getVolume.running = true
+        }
+
         Process{
             id: getVolume
             command: ["wpctl", "get-volume", "@DEFAULT_AUDIO_SINK@"]
             running: true
             stdout: StdioCollector {
                 onStreamFinished: {
-                    root.value = parseFloat(this.text.split(" ")[1])
+                    console.log("test")
+                    var newValue = parseFloat(this.text.split(" ")[1])
+                    if(newValue){
+                        initialDataTimer.repeat = false
+                        initialDataTimer.running = false
+                        root.value = newValue
+                    }
+
                 }
             }
         }
@@ -100,7 +125,7 @@ PanelWindow {
             volumeBar.xProp = 0
         }
         onExited: {
-            volumeBar.xProp = 30
+            volumeBar.xProp = 60
         }
     }
 
