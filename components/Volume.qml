@@ -1,11 +1,13 @@
 import QtQuick
 import Quickshell
+import Quickshell.Wayland
 import Quickshell.Io
 import "../services/Colors"
 
 PanelWindow {
     id: volumeBar
     anchors.right: true
+    WlrLayershell.layer: WlrLayer.Overlay
     exclusiveZone: 0
     implicitWidth: 70
     implicitHeight: 330
