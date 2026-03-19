@@ -8,7 +8,7 @@ Item{
     property int percent: UPower.displayDevice.percentage * 100
 
     anchors.verticalCenter: parent.verticalCenter
-    width: UPower.onBattery ? 58 : 43
+    width: UPower.onBattery ? 43 : 58
     Rectangle{
         width: 40
         radius: 5
@@ -48,7 +48,7 @@ Item{
         bottomRightRadius:2
     }
     Loader{
-        active: UPower.onBattery
+        active: !UPower.onBattery
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         sourceComponent: Image {
