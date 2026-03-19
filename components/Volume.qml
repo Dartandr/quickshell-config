@@ -75,27 +75,26 @@ PanelWindow {
                 let pos = yPos - handle.height / 2
                 pos = Math.max(0, Math.min(track.height - handle.height, pos))
                 let v = 1 - (pos / (track.height - handle.height))
-                root.value = v
-            }
-        }
-        onValueChanged: {
-            if(root.value !== undefined){
-                setVolume.command = ["wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", `${Math.round(root.value * 100)}%`]
+                setVolume.command = ["wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", `${Math.round(v * 100)}%`]
                 setVolume.running = true
             }
-
         }
 
         Process{
             id: setVolume
         }
 
-        Timer {
-            id: initialDataTimer
-            interval: 500
+        Process {
+            id: volumeEvents
+            command: ["pactl", "subscribe"]
             running: true
-            repeat: true
-            onTriggered: getVolume.running = true
+            stdout: SplitParser {
+                onRead: data => {
+                            if (data.includes("sink")) {
+                                getVolume.running = true
+                            }
+                        }
+            }
         }
 
         Process{
@@ -104,14 +103,10 @@ PanelWindow {
             running: true
             stdout: StdioCollector {
                 onStreamFinished: {
-                    console.log("test")
                     var newValue = parseFloat(this.text.split(" ")[1])
                     if(newValue){
-                        initialDataTimer.repeat = false
-                        initialDataTimer.running = false
                         root.value = newValue
                     }
-
                 }
             }
         }
