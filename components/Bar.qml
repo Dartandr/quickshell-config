@@ -88,13 +88,14 @@ PanelWindow {
             anchors.verticalCenter: parent.verticalCenter
             spacing: 5
 
+            Lang{}
+
             Loader {
                 anchors.verticalCenter: parent.verticalCenter
                 active: Config.config.battery
                 sourceComponent: Battery{}
             }
             
-            Lang{}
             // Tray Initialization
 
             Repeater {
