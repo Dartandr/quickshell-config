@@ -59,8 +59,8 @@ PanelWindow {
                         id: workspace
                         width: 30
                         height: 30
-                        color: modelData.urgent ? Colors.warning : Hyprland.focusedWorkspace === modelData ? Colors.accent : Colors.background
-                        visible: modelData.monitor.name === barPanel.screen.name
+                        color: modelData.urgent ? Colors.warning : modelData.focused ? Colors.accent : Colors.background
+                        visible: modelData.monitor.name === barPanel.screen.name && !modelData.name.includes("special") 
                         radius: 15
                         Text{
                             anchors.centerIn: parent
