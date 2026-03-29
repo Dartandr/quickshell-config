@@ -10,6 +10,8 @@ const config = {
     }
   ],
 
+  volumeScreen: "", // screen name where volume control will be displayed
+
   notification:{
     sound: "", // absolute path to notification sound wav only
     monitor: "", // screen name where notifications will be displayed

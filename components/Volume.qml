@@ -6,6 +6,8 @@ import "../services/Colors"
 
 PanelWindow {
     id: volumeBar
+    property var thisScreen
+    screen: thisScreen
     anchors.right: true
     WlrLayershell.layer: WlrLayer.Overlay
     exclusiveZone: 0
