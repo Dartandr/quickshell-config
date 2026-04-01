@@ -4,6 +4,7 @@ import QtQuick
 import Quickshell.Hyprland
 import Quickshell.Services.SystemTray
 import "../services/Colors"
+import "../services/StateService"
 import "../services/HyprlandService"
 import "../config/config.js" as Config
 
@@ -25,20 +26,44 @@ PanelWindow {
         height: parent.implicitHeight
 
         //leftElements
-        Column{
+        Row{
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
             anchors.leftMargin: 30
-            Text{
-                text: HyprlandService.currentApp ? HyprlandService.currentApp : "Desktop"
-                font.pixelSize: 14
-                color: Colors.foregroundDark
+            spacing: 15
+            Rectangle{
+                anchors.verticalCenter: parent.verticalCenter
+                height: 30
+                width: 30
+                color: "transparent"
+
+                Image{
+                    anchors.centerIn: parent
+                    source: "../assets/icons/menu.svg"
+                }
+
+                MouseArea{
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: () => {
+                        StateService.openMenu = !StateService.openMenu
+                    }
+                }
+
             }
-            Text{
-                text: HyprlandService.currentWindowName ? HyprlandService.currentWindowName : `Workspace ${Hyprland.focusedWorkspace.name}`
-                font.pixelSize: 14
-                color: Colors.foreground
-                font.weight: 500
+
+            Column{
+                Text{
+                    text: HyprlandService.currentApp ? HyprlandService.currentApp : "Desktop"
+                    font.pixelSize: 14
+                    color: Colors.foregroundDark
+                }
+                Text{
+                    text: HyprlandService.currentWindowName ? HyprlandService.currentWindowName : `Workspace ${Hyprland.focusedWorkspace.name}`
+                    font.pixelSize: 14
+                    color: Colors.foreground
+                    font.weight: 500
+                }
             }
         }
 
@@ -60,7 +85,7 @@ PanelWindow {
                         width: 30
                         height: 30
                         color: modelData.urgent ? Colors.warning : modelData.focused ? Colors.accent : Colors.background
-                        visible: modelData.monitor.name === barPanel.screen.name && !modelData.name.includes("special") 
+                        visible: modelData.monitor.name === barPanel.screen.name && !modelData.name.includes("special")
                         radius: 15
                         Text{
                             anchors.centerIn: parent
@@ -70,6 +95,7 @@ PanelWindow {
                         }
                         MouseArea{
                             anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
                             onClicked: () => {
                                            Hyprland.dispatch(`workspace ${modelData.name}`)
                                        }
@@ -95,7 +121,7 @@ PanelWindow {
                 active: Config.config.battery
                 sourceComponent: Battery{}
             }
-            
+
             // Tray Initialization
 
             Repeater {

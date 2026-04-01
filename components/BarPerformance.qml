@@ -132,69 +132,6 @@ Row{
         }
 
     }
-    // Item{
-    //     width: childrenRect.width
-    //     height: 30
-
-    //     Row{
-    //         spacing: 5
-    //         Item {
-    //             width: 30
-    //             height: 30
-    //             id: gpu
-    //             property int progress: 41 // 0 - 100
-
-    //             Canvas {
-    //                 id: gpuCanvas
-    //                 anchors.fill: parent
-
-    //                 onPaint: {
-    //                     var ctx = getContext("2d")
-    //                     ctx.reset()
-
-    //                     var centerX = width / 2
-    //                     var centerY = height / 2
-    //                     var radius = width / 2 - 1
-
-    //                     // фон
-    //                     ctx.beginPath()
-    //                     ctx.lineWidth = 2
-    //                     ctx.strokeStyle = "#333"
-    //                     ctx.arc(centerX, centerY, radius, 0, Math.PI * 2)
-    //                     ctx.stroke()
-
-    //                     // прогресс
-    //                     ctx.beginPath()
-    //                     ctx.lineWidth = 2
-    //                     ctx.strokeStyle = Colors.accent
-
-    //                     var start = -Math.PI / 2
-    //                     var end = start + (gpu.progress / 100) * Math.PI * 2
-
-    //                     ctx.arc(centerX, centerY, radius, start, end)
-    //                     ctx.lineCap = "round"
-    //                     ctx.stroke()
-    //                 }
-    //             }
-
-    //             onProgressChanged: gpuCanvas.requestPaint()
-
-    //             Image{
-    //                 anchors.centerIn: parent
-    //                 source: "../assets/icons/gpu.svg"
-    //             }
-    //         }
-    //         Text{
-    //             anchors.verticalCenter: parent.verticalCenter
-    //             text: "50"
-    //             font.pixelSize: 18
-    //             font.weight: 500
-    //             color: Colors.foreground
-    //         }
-
-    //     }
-
-    // }
 
 }
 
