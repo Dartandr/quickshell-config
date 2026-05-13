@@ -97,7 +97,7 @@ PanelWindow {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
                             onClicked: () => {
-                                           Hyprland.dispatch(`workspace ${modelData.name}`)
+                                           Hyprland.dispatch(`hl.dsp.focus({ workspace = "${modelData.name}" })`)
                                        }
                         }
                     }
